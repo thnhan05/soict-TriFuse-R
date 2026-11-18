@@ -1,0 +1,10 @@
+# Ignore LaTeX source files and build artifacts
+*.tex
+*.bib
+*.cls
+*.bst
+*.aux
+*.bbl
+*.blg
+*.log
+main.pdf

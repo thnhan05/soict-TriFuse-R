@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TriFuse-R: Reliability-Aware Multimodal Fusion for Disaster Damage Assessment (SOICT 2026 Oral)</title>
+  
+  <!-- Meta SEO -->
+  <meta name="description" content="Official project page for TriFuse-R: Reliability-Aware Multimodal Fusion for Disaster Damage Assessment. Accepted for ORAL presentation at SOICT 2026 (Springer LNCS).">
+  <meta name="keywords" content="TriFuse-R, Multimodal Fusion, Disaster Damage Assessment, Remote Sensing, Social Sensing, Uncertainty Calibration, SOICT 2026">
+  <meta name="author" content="Tu Hoang Thanh, Thien Nhan Vo, Phung Thi Hien, Ngan Nguyen Xuan Phuong, Ngoc Ngan Huynh, Thanh Xuan Truong">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+            },
+            primary: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            },
+            accent: {
+              50: '#fff7ed',
+              500: '#f97316',
+              600: '#ea580c',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- KaTeX for math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+          onload="renderMathInElement(document.body, {delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ]});"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #059669 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    .badge-oral {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      box-shadow: 0 4px 15px -3px rgba(217, 119, 6, 0.4);
+    }
+    .glow-hover {
+      transition: all 0.25s ease;
+    }
+    .glow-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.15);
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col selection:bg-blue-100 selection:text-blue-900">
+
+  <!-- Sticky Header Navigation -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 transition-all">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 group">
+        <span class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-emerald-500 text-white flex items-center justify-center font-black text-sm shadow-sm group-hover:scale-105 transition-transform">
+          T
+        </span>
+        <div class="flex flex-col">
+          <span class="font-bold text-slate-900 tracking-tight leading-none text-base">TriFuse-R</span>
+          <span class="text-[10px] text-slate-500 font-medium">SOICT 2026 • Paper #3550</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+        <a href="#overview" class="hover:text-blue-600 transition-colors">Overview</a>
+        <a href="#framework" class="hover:text-blue-600 transition-colors">Architecture</a>
+        <a href="#benchmark" class="hover:text-blue-600 transition-colors">Benchmark</a>
+        <a href="#results" class="hover:text-blue-600 transition-colors">Results</a>
+        <a href="#citation" class="hover:text-blue-600 transition-colors">Citation</a>
+      </nav>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex items-center gap-2">
+        <a href="TriFuse-R_Paper_3550.pdf" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-all hover:shadow">
+          <i class="fa-solid fa-file-pdf"></i> Paper PDF
+        </a>
+        <a href="#citation" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
+          <i class="fa-solid fa-quote-left text-slate-500"></i> Cite
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    <!-- Hero Section -->
+    <section class="relative pt-12 pb-16 overflow-hidden bg-gradient-to-b from-blue-50/60 via-white to-slate-50">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        
+        <!-- Conference Acceptance Badge -->
+        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full badge-oral text-white text-xs sm:text-sm font-semibold tracking-wide uppercase shadow-md mb-6 animate-pulse">
+          <i class="fa-solid fa-award text-yellow-200 text-base"></i>
+          <span>Accepted for ORAL Presentation • SOICT 2026 Proceedings</span>
+        </div>
+
+        <!-- Title -->
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight max-w-4xl mx-auto mb-6">
+          <span class="gradient-text">TriFuse-R:</span> Reliability-Aware Multimodal Fusion for Disaster Damage Assessment
+        </h1>
+
+        <!-- Authors Section -->
+        <div class="max-w-3xl mx-auto mb-6">
+          <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-base font-semibold text-slate-800">
+            <span class="hover:text-blue-600 transition-colors cursor-pointer" title="Tuhoang.nckh@gmail.com">Tu Hoang Thanh<sup class="text-blue-600">1</sup></span>
+            <span class="text-slate-300">•</span>
+            <span class="hover:text-blue-600 transition-colors cursor-pointer" title="Corresponding Author (thiennhan.math@gmail.com)">Thien Nhan Vo<sup class="text-blue-600 font-bold">2,*</sup></span>
+            <span class="text-slate-300">•</span>
+            <span class="hover:text-blue-600 transition-colors cursor-pointer" title="hienpt4w@gmail.com">Phung Thi Hien<sup class="text-blue-600">3</sup></span>
+            <span class="text-slate-300">•</span>
+            <span class="hover:text-blue-600 transition-colors cursor-pointer" title="nguyenxuanphuongngan268@gmail.com">Ngan Nguyen Xuan Phuong<sup class="text-blue-600">4</sup></span>
+            <span class="text-slate-300">•</span>
+            <span class="hover:text-blue-600 transition-colors cursor-pointer" title="ngocnganhuynh.work@gmail.com">Ngoc Ngan Huynh<sup class="text-blue-600">5</sup></span>
+            <span class="text-slate-300">•</span>
+            <span class="hover:text-blue-600 transition-colors cursor-pointer" title="xunthanh6@gmail.com">Thanh Xuan Truong<sup class="text-blue-600">6</sup></span>
+          </div>
+          <div class="text-xs text-slate-500 mt-2 font-medium">
+            <span class="text-blue-600 font-semibold">*</span> Corresponding Author
+          </div>
+        </div>
+
+        <!-- Affiliations -->
+        <div class="text-xs sm:text-sm text-slate-600 max-w-4xl mx-auto space-y-1 mb-8">
+          <p><sup class="text-blue-600 font-medium">1</sup> National Economics University, Hanoi, Vietnam &nbsp;|&nbsp; <sup class="text-blue-600 font-medium">2</sup> HUTECH University, Ho Chi Minh City, Vietnam</p>
+          <p><sup class="text-blue-600 font-medium">3</sup> Hanoi University, Hanoi, Vietnam &nbsp;|&nbsp; <sup class="text-blue-600 font-medium">4</sup> Institute of Intelligent Interactive Technologies, UEH University, Vietnam</p>
+          <p><sup class="text-blue-600 font-medium">5</sup> Foreign Trade University, HCMC Campus, Vietnam &nbsp;|&nbsp; <sup class="text-blue-600 font-medium">6</sup> VNU University of Science, VNU Hanoi, Vietnam</p>
+          <p class="text-[11px] text-slate-400 font-mono mt-1">Springer Lecture Notes in Computer Science (LNCS) / CCIS Proceedings • SOICT 2026</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-3 max-w-3xl mx-auto mb-12">
+          <a href="TriFuse-R_Paper_3550.pdf" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 glow-hover transition-all">
+            <i class="fa-solid fa-file-pdf"></i> Paper (PDF, 15 Pages)
+          </a>
+          <a href="#benchmark" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-slate-800 bg-white hover:bg-slate-100 border border-slate-200 shadow-sm glow-hover transition-all">
+            <i class="fa-solid fa-database text-emerald-600"></i> Benchmark Data (N=368)
+          </a>
+          <a href="#citation" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-slate-800 bg-white hover:bg-slate-100 border border-slate-200 shadow-sm glow-hover transition-all">
+            <i class="fa-solid fa-quote-right text-slate-600"></i> BibTeX
+          </a>
+        </div>
+
+        <!-- Quick Metrics Highlights Ticker -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 max-w-4xl mx-auto text-left">
+          <div class="glass-card rounded-2xl p-4 shadow-sm border border-slate-200/80">
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Accuracy</div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-blue-600 tracking-tight">81.8%</div>
+            <div class="text-[11px] text-emerald-600 font-semibold mt-1"><i class="fa-solid fa-arrow-trend-up"></i> +2.7% vs. Equal-Weight</div>
+          </div>
+          <div class="glass-card rounded-2xl p-4 shadow-sm border border-slate-200/80">
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Macro-F1</div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-indigo-600 tracking-tight">76.8%</div>
+            <div class="text-[11px] text-emerald-600 font-semibold mt-1"><i class="fa-solid fa-check"></i> Stat. Sig (p = 0.008)</div>
+          </div>
+          <div class="glass-card rounded-2xl p-4 shadow-sm border border-slate-200/80">
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Calibration ECE</div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-emerald-600 tracking-tight">0.041</div>
+            <div class="text-[11px] text-emerald-600 font-semibold mt-1"><i class="fa-solid fa-shield-halved"></i> 32.8% lower error</div>
+          </div>
+          <div class="glass-card rounded-2xl p-4 shadow-sm border border-slate-200/80">
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Agreement</div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-amber-600 tracking-tight">0.84</div>
+            <div class="text-[11px] text-slate-600 font-medium mt-1">Fleiss' &kappa; (3 Annotators)</div>
+          </div>
+          <div class="col-span-2 md:col-span-1 glass-card rounded-2xl p-4 shadow-sm border border-slate-200/80">
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Efficiency</div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-rose-600 tracking-tight">&lt;1.2%</div>
+            <div class="text-[11px] text-slate-600 font-medium mt-1">Latency overhead (3.8ms)</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Overview & Teaser Figure -->
+    <section id="overview" class="py-16 bg-white border-y border-slate-200">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-10">
+          <h2 class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">Framework & Visual Architecture</h2>
+          <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+            Reliability-Aware Trimodal Evidence Fusion Architecture
+          </h3>
+          <p class="text-slate-600 text-sm sm:text-base mt-2">
+            TriFuse-R dynamically integrates satellite imagery, humanitarian tweets, and ground photos by quantifying prediction confidence and spatial-semantic uncertainty.
+          </p>
+        </div>
+
+        <!-- Figure 1 Container -->
+        <div class="bg-slate-50 p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm mb-6">
+          <div class="relative overflow-hidden rounded-xl bg-white border border-slate-200 shadow-inner group">
+            <img src="Paper_Fig_1.png" alt="TriFuse-R Architecture Framework" class="w-full h-auto object-contain max-h-[500px] mx-auto p-2 group-hover:scale-[1.01] transition-transform duration-300">
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 mt-4 leading-relaxed">
+            <strong class="text-slate-900">Figure 1: Complete architecture of the TriFuse-R framework.</strong> 
+            Bi-temporal satellite pairs ($\mathbf{I}_{pre}, \mathbf{I}_{post}$) are processed via Siamese U-Net, situational tweets through RoBERTa-base, and ground photos via EfficientNet-B2. Modality reliability $r_m$ is derived from predictive confidence and spatial-semantic entropy, dynamically aggregated using temperature-scaled softmax attention ($\tau = 0.5$) with gated feature adapters.
+          </p>
+        </div>
+
+        <!-- Abstract & Key Motivation -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start mt-12">
+          <div class="md:col-span-7 space-y-4">
+            <h4 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-file-lines text-blue-600"></i> Abstract
+            </h4>
+            <div class="text-sm sm:text-base text-slate-700 leading-relaxed text-justify space-y-3 bg-slate-50/70 p-6 rounded-2xl border border-slate-200">
+              <p>
+                Rapid post-disaster damage assessment is essential for emergency response and relief allocation. While multimodal models combining satellite remote sensing and social sensing offer promising situational awareness, prevailing approaches rely on equal-weight fusion or naive concatenation, ignoring substantial variations in modality reliability due to cloud obscuration, revisit latency, and noisy crowdsourced reports.
+              </p>
+              <p>
+                We propose <strong>TriFuse-R</strong>, an end-to-end reliability-aware trimodal evidence fusion framework that dynamically integrates satellite imagery, humanitarian social text, and ground photographs for damage severity assessment. We establish an aligned multimodal benchmark across Hurricane Harvey and the Mexico Earthquake harmonized into a three-tier taxonomy (<em>None</em>, <em>Minor</em>, <em>Severe</em>) supported by multi-annotator verification (Fleiss' $\kappa = 0.84$).
+              </p>
+              <p>
+                Stratified 5-fold cross-validation across all $N = 368$ samples demonstrates that TriFuse-R achieves <strong>81.8% accuracy</strong> and <strong>76.8% Macro-F1</strong>, significantly outperforming unimodal backbones and equal-weight fusion ($p = 0.008$) with <strong>32.8% lower calibration error</strong>. Controlled missing-modality analyses against re-normalized baselines confirm the operational resilience and fault tolerance of our framework under sensor degradation.
+              </p>
+            </div>
+          </div>
+
+          <div class="md:col-span-5 space-y-4">
+            <h4 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-amber-500"></i> Key Insights
+            </h4>
+            
+            <div class="space-y-3">
+              <div class="p-4 rounded-xl border border-rose-200 bg-rose-50/60">
+                <div class="flex items-center gap-2 text-rose-800 font-semibold text-xs uppercase tracking-wider mb-1">
+                  <i class="fa-solid fa-triangle-exclamation"></i> The Problem with Equal-Weight Fusion
+                </div>
+                <p class="text-xs text-rose-950 leading-relaxed">
+                  Direct concatenation or $1/3$ static weighting assumes all sensors are equally dependable. In real crises, cloud cover, sensor noise, or vague tweets inject uncalibrated noise directly into decision pipelines.
+                </p>
+              </div>
+
+              <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/60">
+                <div class="flex items-center gap-2 text-emerald-800 font-semibold text-xs uppercase tracking-wider mb-1">
+                  <i class="fa-solid fa-circle-check"></i> Dynamic Calibrated Reliability
+                </div>
+                <p class="text-xs text-emerald-950 leading-relaxed">
+                  TriFuse-R computes scalar reliability scores $r_m \in (0, 1]$ using both prediction confidence and predictive entropy $H_m$. Corrupted or ambiguous streams are smoothly suppressed without losing complementary cues.
+                </p>
+              </div>
+
+              <div class="p-4 rounded-xl border border-blue-200 bg-blue-50/60">
+                <div class="flex items-center gap-2 text-blue-800 font-semibold text-xs uppercase tracking-wider mb-1">
+                  <i class="fa-solid fa-shield-halved"></i> Zero-Overhead Fault Tolerance
+                </div>
+                <p class="text-xs text-blue-950 leading-relaxed">
+                  When a sensor fails or an image is missing, TriFuse-R re-normalizes attention over surviving channels at test time without retraining or zero-imputation artifacts.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Methodology Deep Dive -->
+    <section id="framework" class="py-16 bg-white border-b border-slate-200">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <h2 class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">Technical Formulation</h2>
+          <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+            How TriFuse-R Models Multimodal Reliability
+          </h3>
+          <p class="text-slate-600 text-sm sm:text-base mt-2">
+            Mathematical grounding of predictive confidence, spatial-semantic entropy calibration, temperature scaling, and gated modulation.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          
+          <!-- Satellite Branch -->
+          <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200">
+            <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-3 text-lg font-bold">
+              <i class="fa-solid fa-satellite"></i>
+            </div>
+            <h4 class="text-base font-bold text-slate-900 mb-1">Satellite Reliability</h4>
+            <div class="text-xs text-blue-600 font-semibold mb-2">Siamese U-Net Backbone</div>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">
+              Estimates change detection between pre- and post-disaster tiles ($\mathbf{I}_{pre}, \mathbf{I}_{post}$). Formulates $r_{sat}$ by penalizing spatial prediction entropy across all $N$ pixels:
+            </p>
+            <div class="bg-white p-3 rounded-xl border border-slate-200 font-mono text-xs text-slate-800 overflow-x-auto">
+              $$r_{sat} = \bar{c}_{sat}(1 - H_{sat})$$
+              $$H_{sat} = -\frac{1}{N \log C}\sum_{i=1}^N \sum_{c=1}^C p_{ic} \log p_{ic}$$
+            </div>
+          </div>
+
+          <!-- Text Branch -->
+          <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200">
+            <div class="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-600 flex items-center justify-center mb-3 text-lg font-bold">
+              <i class="fa-brands fa-x-twitter"></i>
+            </div>
+            <h4 class="text-base font-bold text-slate-900 mb-1">Text Reliability</h4>
+            <div class="text-xs text-cyan-600 font-semibold mb-2">RoBERTa-base Contextual Encoder</div>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">
+              Extracts situational cues from tweets. Quantifies reliability by coupling maximum predictive probability with normalized semantic predictive entropy:
+            </p>
+            <div class="bg-white p-3 rounded-xl border border-slate-200 font-mono text-xs text-slate-800 overflow-x-auto">
+              $$r_{txt} = \max_c P_{txt}(c) \cdot (1 - H_{txt})$$
+              $$H_{txt} = -\frac{1}{\log C}\sum_{c=1}^C P_{txt}(c)\log P_{txt}(c)$$
+            </div>
+          </div>
+
+          <!-- Image Branch -->
+          <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200">
+            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3 text-lg font-bold">
+              <i class="fa-solid fa-camera"></i>
+            </div>
+            <h4 class="text-base font-bold text-slate-900 mb-1">Image Reliability</h4>
+            <div class="text-xs text-emerald-600 font-semibold mb-2">EfficientNet-B2 Backbone</div>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">
+              Captures ground-level structural destruction (facade cracks, debris). Combines model predictive confidence with crowdsourced annotation consensus $a_{img}$:
+            </p>
+            <div class="bg-white p-3 rounded-xl border border-slate-200 font-mono text-xs text-slate-800 overflow-x-auto">
+              $$r_{img} = c_{img} \times a_{img}$$
+              $$c_{img} = \max_c P_{img}(c), \quad a_{img} \in [0.5, 1.0]$$
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Temperature Scaling and Gated Modulation -->
+        <div class="bg-gradient-to-r from-blue-50 via-indigo-50 to-emerald-50 p-6 sm:p-8 rounded-3xl border border-indigo-100 shadow-sm">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="space-y-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-700 bg-white/80 px-3 py-1 rounded-full border border-indigo-200">
+                Core Evidence Arbitration
+              </span>
+              <h4 class="text-xl sm:text-2xl font-bold text-slate-900">
+                Calibrated Temperature Scaling & Gating
+              </h4>
+              <p class="text-sm text-slate-700 leading-relaxed">
+                Rather than treating all modalities identically, scalar reliability scores are normalized into attention weights via a calibrated temperature hyperparameter $\tau = 0.5$. Each modality embedding is modulated via channel gating adapters $\tilde{\mathbf{f}}_m$ before aggregation:
+              </p>
+              <div class="bg-white/90 p-4 rounded-xl border border-indigo-200 text-xs text-slate-800 overflow-x-auto space-y-2">
+                <div>$$\hat{r}_m(\tau) = \frac{\exp(r_m / \tau)}{\sum_{j \in \{sat, txt, img\}} \exp(r_j / \tau)}$$</div>
+                <div>$$\tilde{\mathbf{f}}_m = \mathbf{f}_m \odot \sigma(\mathbf{W}_{g,m}\mathbf{f}_m + \mathbf{b}_{g,m})$$</div>
+                <div>$$\mathbf{f}_{fuse} = \sum_{m} \hat{r}_m(\tau) \tilde{\mathbf{f}}_m, \quad \hat{y} = \mathrm{Softmax}(\mathrm{MLP}(\mathbf{f}_{fuse}))$$</div>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+              <h5 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-life-ring text-emerald-600"></i> Dynamic Fault Tolerance at Test-Time
+              </h5>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                When sensors fail in actual disaster deployments (e.g., dense cloud cover over satellites or network loss preventing tweets), TriFuse-R masks missing channels ($r_k \to -\infty$) and dynamically re-normalizes attention across available streams $\mathcal{M}_{avail}$ without retraining:
+              </p>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs font-mono text-slate-800 overflow-x-auto text-center">
+                $$\hat{r}_m(\tau) = \frac{\exp(r_m / \tau)}{\sum_{j \in \mathcal{M}_{avail}} \exp(r_j / \tau)}, \quad \forall m \in \mathcal{M}_{avail}$$
+              </div>
+              <div class="text-[11px] text-emerald-700 font-medium bg-emerald-50 p-2.5 rounded-lg border border-emerald-200">
+                <i class="fa-solid fa-check"></i> Outperforms static zero-padding by up to +15.4% Macro-F1 and re-normalized baselines by +4.8%.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Harmonized Benchmark & Dataset Construction -->
+    <section id="benchmark" class="py-16 bg-slate-50 border-b border-slate-200">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <h2 class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">Benchmark Construction</h2>
+          <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+            Tripartite Spatio-Temporal Alignment & Harmonization
+          </h3>
+          <p class="text-slate-600 text-sm sm:text-base mt-2">
+            Unifying xBD, HumAID, and CrisisMMD under a verified three-tier disaster severity taxonomy with high inter-annotator agreement.
+          </p>
+        </div>
+
+        <!-- 3-Tier Taxonomy Mapping Table -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-8">
+          <div class="px-6 py-4 bg-slate-100 border-b border-slate-200 flex items-center justify-between">
+            <h4 class="text-sm font-bold text-slate-900">Harmonized Three-Tier Severity Taxonomy Mapping</h4>
+            <span class="text-xs font-semibold px-2.5 py-1 bg-blue-100 text-blue-700 rounded-full">Fleiss' &kappa; = 0.84</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs sm:text-sm text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                  <th class="py-3 px-4">Standardized Tier</th>
+                  <th class="py-3 px-4">xBD (Satellite)</th>
+                  <th class="py-3 px-4">CrisisMMD (Ground Photos)</th>
+                  <th class="py-3 px-4">HumAID (Crisis Tweets)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 text-slate-600">
+                <tr class="hover:bg-slate-50 transition-colors">
+                  <td class="py-3.5 px-4 font-bold text-emerald-700 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> None
+                  </td>
+                  <td class="py-3.5 px-4 font-mono text-xs">no damage</td>
+                  <td class="py-3.5 px-4 font-mono text-xs">little or no damage</td>
+                  <td class="py-3.5 px-4">Informational, sympathy, logistic updates</td>
+                </tr>
+                <tr class="hover:bg-slate-50 transition-colors">
+                  <td class="py-3.5 px-4 font-bold text-amber-600 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Minor
+                  </td>
+                  <td class="py-3.5 px-4 font-mono text-xs">minor damage</td>
+                  <td class="py-3.5 px-4 font-mono text-xs">mild damage</td>
+                  <td class="py-3.5 px-4">Localized blockage, light structural impairment</td>
+                </tr>
+                <tr class="hover:bg-slate-50 transition-colors">
+                  <td class="py-3.5 px-4 font-bold text-rose-600 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Severe
+                  </td>
+                  <td class="py-3.5 px-4 font-mono text-xs">major damage, destroyed</td>
+                  <td class="py-3.5 px-4 font-mono text-xs">severe damage</td>
+                  <td class="py-3.5 px-4">Structural collapse, casualties, urgent rescue calls</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 3-Stage Alignment Protocol Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative">
+            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs mb-3">1</div>
+            <h4 class="text-sm font-bold text-slate-900 mb-1">Spatio-Temporal Windowing</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Temporal filtering restricts candidate samples to $\pm 48$--$72$ hours post-event. Geocoded posts are mapped to satellite tiles via spatial nearest-neighbor bridge ($k=5$ within radius $R \le 2$ km).
+            </p>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative">
+            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs mb-3">2</div>
+            <h4 class="text-sm font-bold text-slate-900 mb-1">Semantic & Visual Filtering</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Keywords (<em>collapse, flood, debris, destroyed</em>) identify relevant tweets. Non-structural images (memes, infographics, portraits) are systematically pruned.
+            </p>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative">
+            <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs mb-3">3</div>
+            <h4 class="text-sm font-bold text-slate-900 mb-1">Multi-Annotator Verification</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              3 independent researchers verified alignment fidelity (Cohen's $\kappa = 0.81$). Only triplets with corroborating satellite change, ground photos, and text reports were retained.
+            </p>
+          </div>
+        </div>
+
+        <!-- Event Distribution Summary -->
+        <div class="mt-8 bg-blue-50/60 p-4 rounded-xl border border-blue-200 flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm text-slate-700">
+          <div>
+            <strong class="text-blue-900 font-semibold">Benchmark Corpus ($N = 368$ Triplets):</strong>
+            <span class="ml-2">Hurricane Harvey (309 triplets, flood inundation) &bull; Mexico Earthquake (59 triplets, seismic collapse)</span>
+          </div>
+          <div class="flex items-center gap-2 font-mono text-xs text-blue-800 bg-white px-3 py-1.5 rounded-lg border border-blue-200 shadow-sm">
+            <i class="fa-solid fa-lock text-emerald-600"></i> Disjoint 5-Fold Stratified CV
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Experimental Results Section -->
+    <section id="results" class="py-16 bg-white border-b border-slate-200">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <h2 class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-2">Empirical Validation</h2>
+          <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+            Quantitative Evaluation & Statistical Significance
+          </h3>
+          <p class="text-slate-600 text-sm sm:text-base mt-2">
+            Rigorous stratified 5-fold cross-validation on all $N=368$ samples with 95% bootstrap confidence intervals ($B=1,000$).
+          </p>
+        </div>
+
+        <!-- Main Comparison Table (Table 1 from paper) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-12">
+          <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+            <h4 class="text-sm font-bold text-slate-900">Table 1: Damage Severity Assessment Performance on Aligned Benchmark ($N = 368$)</h4>
+            <span class="text-xs text-slate-500 font-medium">Primary metric: Macro-F1 (%)</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs sm:text-sm text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200">
+                  <th class="py-3 px-4">Method / Architecture</th>
+                  <th class="py-3 px-4 text-center">Accuracy (%)</th>
+                  <th class="py-3 px-4 text-center">Macro-F1 (%)</th>
+                  <th class="py-3 px-4 text-center">Weighted-F1 (%)</th>
+                  <th class="py-3 px-4 text-center">ECE &darr;</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 text-slate-700">
+                <tr class="hover:bg-slate-50">
+                  <td class="py-3 px-4 text-slate-600">Satellite Only (Siamese U-Net)</td>
+                  <td class="py-3 px-4 text-center font-mono">69.4</td>
+                  <td class="py-3 px-4 text-center font-mono">62.1</td>
+                  <td class="py-3 px-4 text-center font-mono">68.2</td>
+                  <td class="py-3 px-4 text-center font-mono text-slate-500">0.103</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="py-3 px-4 text-slate-600">Text Only (BiLSTM)</td>
+                  <td class="py-3 px-4 text-center font-mono">68.2</td>
+                  <td class="py-3 px-4 text-center font-mono">63.8</td>
+                  <td class="py-3 px-4 text-center font-mono">67.5</td>
+                  <td class="py-3 px-4 text-center font-mono text-slate-500">0.095</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="py-3 px-4 text-slate-600">Text Only (RoBERTa)</td>
+                  <td class="py-3 px-4 text-center font-mono">73.1</td>
+                  <td class="py-3 px-4 text-center font-mono">68.4</td>
+                  <td class="py-3 px-4 text-center font-mono">72.2</td>
+                  <td class="py-3 px-4 text-center font-mono text-slate-500">0.081</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="py-3 px-4 text-slate-600">Image Only (EfficientNet-B2)</td>
+                  <td class="py-3 px-4 text-center font-mono">77.6</td>
+                  <td class="py-3 px-4 text-center font-mono">72.8</td>
+                  <td class="py-3 px-4 text-center font-mono">76.9</td>
+                  <td class="py-3 px-4 text-center font-mono text-slate-500">0.072</td>
+                </tr>
+                <tr class="bg-slate-50/80 font-medium">
+                  <td class="py-3 px-4 text-slate-800">Equal-weight Fusion (with Gating)</td>
+                  <td class="py-3 px-4 text-center font-mono">79.1</td>
+                  <td class="py-3 px-4 text-center font-mono">74.1</td>
+                  <td class="py-3 px-4 text-center font-mono">78.9</td>
+                  <td class="py-3 px-4 text-center font-mono text-slate-600">0.061</td>
+                </tr>
+                <tr class="bg-slate-50/80 font-medium">
+                  <td class="py-3 px-4 text-slate-800">Reliability Fusion (Uncalibrated)</td>
+                  <td class="py-3 px-4 text-center font-mono">80.4</td>
+                  <td class="py-3 px-4 text-center font-mono">75.2</td>
+                  <td class="py-3 px-4 text-center font-mono">80.1</td>
+                  <td class="py-3 px-4 text-center font-mono text-slate-600">0.055</td>
+                </tr>
+                <tr class="bg-emerald-50/90 font-bold text-emerald-950 border-t-2 border-emerald-400">
+                  <td class="py-3.5 px-4 flex items-center gap-2 text-emerald-900">
+                    <i class="fa-solid fa-crown text-amber-500"></i> TriFuse-R (Ours, &tau; = 0.5)
+                  </td>
+                  <td class="py-3.5 px-4 text-center font-mono text-blue-700 text-base">81.8</td>
+                  <td class="py-3.5 px-4 text-center font-mono text-indigo-700 text-base">76.8</td>
+                  <td class="py-3.5 px-4 text-center font-mono text-emerald-700 text-base">81.5</td>
+                  <td class="py-3.5 px-4 text-center font-mono text-emerald-800 font-extrabold">0.041</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="p-3 bg-slate-50 border-t border-slate-200 text-xs text-slate-600 flex flex-wrap items-center justify-between gap-2">
+            <span><strong>Significance:</strong> TriFuse-R vs. Equal-Weight paired bootstrap test $p = 0.008 &lt; 0.01$.</span>
+            <span class="text-emerald-700 font-semibold"><i class="fa-solid fa-arrow-down"></i> 32.8% Relative ECE Reduction</span>
+          </div>
+        </div>
+
+        <!-- Grid: Confusion Matrix + Ablation Analysis -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start mb-12">
+          
+          <!-- Confusion Matrix (Figure 2) -->
+          <div class="md:col-span-5 bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm">
+            <h4 class="text-sm font-bold text-slate-900 mb-3 flex items-center justify-between">
+              <span>Figure 2: Confusion Matrix</span>
+              <span class="text-[11px] font-mono text-blue-600">Out-of-Fold (N=368)</span>
+            </h4>
+            <div class="bg-white p-3 rounded-xl border border-slate-200 text-center">
+              <img src="Paper_Fig_2.png" alt="TriFuse-R Confusion Matrix" class="w-full max-w-[280px] h-auto mx-auto rounded-lg shadow-sm">
+            </div>
+            <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+              Evaluated across all 368 out-of-fold benchmark samples. Note the minimal confusion between extreme severity tiers (<em>None</em> vs. <em>Severe</em>), ensuring robust operational safety in disaster triage.
+            </p>
+          </div>
+
+          <!-- Ablation & Sensitivity Study -->
+          <div class="md:col-span-7 bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm">
+            <h4 class="text-sm font-bold text-slate-900 mb-3 flex items-center justify-between">
+              <span>Table 2: Ablation & Temperature Sensitivity</span>
+              <span class="text-[11px] font-mono text-slate-500">Component Analysis</span>
+            </h4>
+            <div class="overflow-x-auto bg-white rounded-xl border border-slate-200">
+              <table class="w-full text-xs text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200">
+                    <th class="py-2.5 px-3">Configuration Variant</th>
+                    <th class="py-2.5 px-3 text-center">Macro-F1 (%)</th>
+                    <th class="py-2.5 px-3 text-center">ECE &darr;</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 text-slate-700">
+                  <tr class="bg-emerald-50 font-bold text-emerald-950">
+                    <td class="py-2 px-3">Full TriFuse-R (&tau; = 0.5)</td>
+                    <td class="py-2 px-3 text-center font-mono">76.8</td>
+                    <td class="py-2 px-3 text-center font-mono">0.041</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 px-3 text-slate-600">&tau; = 0.2 (Hard Modality Gating)</td>
+                    <td class="py-2 px-3 text-center font-mono">74.5</td>
+                    <td class="py-2 px-3 text-center font-mono">0.058</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 px-3 text-slate-600">&tau; = 1.0 (Standard Softmax)</td>
+                    <td class="py-2 px-3 text-center font-mono">75.9</td>
+                    <td class="py-2 px-3 text-center font-mono">0.049</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 px-3 text-slate-600">&tau; = 2.0 (Over-Smoothed Weights)</td>
+                    <td class="py-2 px-3 text-center font-mono">74.8</td>
+                    <td class="py-2 px-3 text-center font-mono">0.056</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 px-3 text-slate-600">&tau; &rarr; &infin; (Equal-Weight w/ Gating)</td>
+                    <td class="py-2 px-3 text-center font-mono">74.1</td>
+                    <td class="py-2 px-3 text-center font-mono">0.061</td>
+                  </tr>
+                  <tr class="border-t border-slate-300">
+                    <td class="py-2 px-3 text-slate-600">w/o Uncertainty Calibration ($H_{sat}, H_{txt}$)</td>
+                    <td class="py-2 px-3 text-center font-mono">75.2</td>
+                    <td class="py-2 px-3 text-center font-mono">0.055</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 px-3 text-slate-600">w/o Crowd Annotation Confidence ($a_{img}$)</td>
+                    <td class="py-2 px-3 text-center font-mono">75.5</td>
+                    <td class="py-2 px-3 text-center font-mono">0.052</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 px-3 text-slate-600">w/o Gated Adaptation ($\tilde{\mathbf{f}}_m$)</td>
+                    <td class="py-2 px-3 text-center font-mono">75.6</td>
+                    <td class="py-2 px-3 text-center font-mono">0.048</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 px-3 text-rose-600 font-medium">Random Reliability Weighting</td>
+                    <td class="py-2 px-3 text-center font-mono text-rose-600 font-bold">68.1</td>
+                    <td class="py-2 px-3 text-center font-mono text-rose-600">0.089</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Missing Modality Resilience Table (Table 3 from paper) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h4 class="text-sm font-bold text-slate-900">Table 3: Controlled Missing-Modality Stress Test at Test Time</h4>
+              <p class="text-xs text-slate-500">Evaluating resilience across all partial and unimodal fallback scenarios without retraining.</p>
+            </div>
+            <span class="text-xs font-semibold px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-full">Fault-Tolerant Dynamic Masking</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs sm:text-sm text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200">
+                  <th class="py-3 px-4">Available Sensor Channels</th>
+                  <th class="py-3 px-4 text-center" colspan="2">Static Equal-Weight (Zero-padded)</th>
+                  <th class="py-3 px-4 text-center" colspan="2">Re-normalized Equal-Weight</th>
+                  <th class="py-3 px-4 text-center bg-emerald-50/80" colspan="2">TriFuse-R (Ours, Calibrated)</th>
+                </tr>
+                <tr class="bg-slate-50 text-[11px] text-slate-500 font-mono border-b border-slate-200">
+                  <th></th>
+                  <th class="py-1.5 px-2 text-center">Acc (%)</th>
+                  <th class="py-1.5 px-2 text-center">Macro-F1 (%)</th>
+                  <th class="py-1.5 px-2 text-center">Acc (%)</th>
+                  <th class="py-1.5 px-2 text-center">Macro-F1 (%)</th>
+                  <th class="py-1.5 px-2 text-center text-emerald-800 bg-emerald-50/80">Acc (%)</th>
+                  <th class="py-1.5 px-2 text-center text-emerald-800 bg-emerald-50/80">Macro-F1 (%)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 text-slate-700">
+                <tr class="font-bold bg-slate-50/60">
+                  <td class="py-2.5 px-4">Complete Trimodal (Sat + Txt + Img)</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-500">79.1</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-500">74.1</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-500">79.1</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-500">74.1</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-blue-700 bg-emerald-50/50">81.8</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-emerald-700 bg-emerald-50/50">76.8</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="py-2.5 px-4 text-slate-600">Satellite + Image (Text Missing)</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-500">75.8</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-500">70.4</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-700">77.2</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-700">72.3</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-blue-700 font-bold bg-emerald-50/30">79.3</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-emerald-700 font-bold bg-emerald-50/30">74.6</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="py-2.5 px-4 text-slate-600">Text + Image (Satellite Missing)</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-500">74.5</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-500">69.2</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-700">76.4</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-700">71.0</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-blue-700 font-bold bg-emerald-50/30">78.5</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-emerald-700 font-bold bg-emerald-50/30">73.9</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="py-2.5 px-4 text-slate-600">Satellite + Text (Image Missing)</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-rose-500">62.2</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-rose-500">54.8</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-700">67.5</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-700">65.4</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-blue-700 font-bold bg-emerald-50/30">71.7</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-emerald-700 font-bold bg-emerald-50/30">70.2</td>
+                </tr>
+                <tr class="hover:bg-slate-50 border-t border-slate-200">
+                  <td class="py-2.5 px-4 text-slate-500">Image Only Fallback</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-400">63.9</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-400">58.2</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-700">73.5</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-700">67.8</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-blue-700 font-bold bg-emerald-50/30">77.6</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-emerald-700 font-bold bg-emerald-50/30">72.8</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="py-2.5 px-4 text-slate-500">Text Only Fallback</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-400">58.4</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-400">52.4</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-700">68.9</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-700">63.8</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-blue-700 font-bold bg-emerald-50/30">73.1</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-emerald-700 font-bold bg-emerald-50/30">68.4</td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="py-2.5 px-4 text-slate-500">Satellite Only Fallback</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-400">53.0</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-400">47.9</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-700">64.2</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-slate-700">57.5</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-blue-700 font-bold bg-emerald-50/30">69.4</td>
+                  <td class="py-2.5 px-2 text-center font-mono text-emerald-700 font-bold bg-emerald-50/30">62.1</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Citation & BibTeX Section -->
+    <section id="citation" class="py-16 bg-slate-900 text-white border-t border-slate-800">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center mb-8">
+          <h2 class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-2">Reference & Citation</h2>
+          <h3 class="text-2xl font-bold tracking-tight">BibTeX Citation</h3>
+          <p class="text-slate-400 text-sm mt-1">If you find TriFuse-R or our aligned benchmark helpful, please cite our SOICT 2026 paper:</p>
+        </div>
+
+        <div class="relative bg-slate-950 rounded-2xl border border-slate-800 p-5 shadow-2xl">
+          <button id="btn-copy-bibtex" class="absolute top-4 right-4 px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white flex items-center gap-1.5 transition-all shadow-sm">
+            <i class="fa-regular fa-clone"></i> <span id="copy-btn-text">Copy BibTeX</span>
+          </button>
+          <pre id="bibtex-code" class="font-mono text-xs text-slate-300 overflow-x-auto leading-relaxed pt-2">
+@inproceedings{Thanh2026TriFuseR,
+  author    = {Tu Hoang Thanh and Thien Nhan Vo and Phung Thi Hien and Ngan Nguyen Xuan Phuong and Ngoc Ngan Huynh and Thanh Xuan Truong},
+  title     = {TriFuse-R: Reliability-Aware Multimodal Fusion for Disaster Damage Assessment},
+  booktitle = {Proceedings of the 15th International Symposium on Information and Communication Technology (SOICT 2026)},
+  series    = {Lecture Notes in Computer Science (LNCS)},
+  publisher = {Springer},
+  year      = {2026},
+  note      = {Paper ID: 3550, Accepted for ORAL Presentation}
+}</pre>
+        </div>
+
+        <!-- Contact Authors Box -->
+        <div class="mt-8 p-5 rounded-2xl bg-slate-800/60 border border-slate-700 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h4 class="text-sm font-semibold text-white">Corresponding Author Inquiries</h4>
+            <p class="text-xs text-slate-400 mt-0.5">Thien Nhan Vo &bull; HUTECH University, Ho Chi Minh City, Vietnam</p>
+          </div>
+          <a href="mailto:thiennhan.math@gmail.com" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+            <i class="fa-solid fa-envelope"></i> Contact Corresponding Author
+          </a>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-950 border-t border-slate-800/80 py-8 text-slate-500 text-xs text-center">
+    <div class="max-w-5xl mx-auto px-4 space-y-2">
+      <p class="font-medium text-slate-400">
+        TriFuse-R: Reliability-Aware Multimodal Fusion for Disaster Damage Assessment &bull; SOICT 2026 Oral Paper #3550
+      </p>
+      <p class="text-[11px] text-slate-500">
+        Template and project webpage created for SOICT 2026 conference presentation. Based on academic project page design guidelines.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 text-xs font-semibold">
+      <i class="fa-solid fa-circle-check text-sm"></i>
+      <span>BibTeX citation copied to clipboard!</span>
+    </div>
+  </div>
+
+  <!-- Copy BibTeX Action Script -->
+  <script>
+    const copyBtn = document.getElementById('btn-copy-bibtex');
+    const bibtexCode = document.getElementById('bibtex-code');
+    const copyText = document.getElementById('copy-btn-text');
+    const toast = document.getElementById('toast');
+
+    if (copyBtn && bibtexCode) {
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(bibtexCode.innerText.trim()).then(() => {
+          copyText.textContent = 'Copied!';
+          copyBtn.classList.replace('bg-blue-600', 'bg-emerald-600');
+          
+          // Show toast
+          if (toast) {
+            toast.classList.remove('translate-y-20', 'opacity-0');
+          }
+          
+          setTimeout(() => {
+            copyText.textContent = 'Copy BibTeX';
+            copyBtn.classList.replace('bg-emerald-600', 'bg-blue-600');
+            if (toast) {
+              toast.classList.add('translate-y-20', 'opacity-0');
+            }
+          }, 2500);
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>
